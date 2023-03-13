@@ -1,5 +1,39 @@
 # CNI meeting notes
 
+_note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
+
+## 2023-03-20
+Agenda:
+- Let's try and write the spec for GC.
+
+## 2023-03-13
+Agenda:
+
+round of introductions
+
+- STATUS for v1.1?
+- Multi-network? Doug not present
+- Network Plugin for containerd(Henry)
+    - initial problem: trying to solve leaking resources (sometimes cleanup fails)
+    - led to GC proposal, as well as GC() method on libcni
+    - https://github.com/containerd/containerd/pull/7947
+- Does it make sense for some kind of idempotent Sync()
+    - Challenges:
+        - hard to make fast / high overhead
+        - chained plugins make this difficult, might have flapping interfaces
+        - pushes a lot of overhead on the plugins
+    - Does INIT solve this? Not really; runtime might not call INIT when it's needed
+- What do we do on failed CHECK?
+    - Should we allow for ADD after failed CHECK
+    - Chained plugins make this difficult, but we could change the spec
+- (tomo) Consider a bridge - when should we delete it?
+    - even though no container interface in bridge, user may add some physical interface to the pod
+    - bridge plugin does not have lock mechanism for multiple container
+    - we considered a DEINIT verb, but it didn't seem useful
+- Let's do some reviews. Oops, we run out of time
+- Should we formalize "how to interact with libcni"?
+    - What are the expectations for how configuration files are dropped in? (e.g. permission error)
+- 
 
 
 ## 2023-03-06
