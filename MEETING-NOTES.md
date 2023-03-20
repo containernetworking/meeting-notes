@@ -4,7 +4,11 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 
 ## 2023-03-20
 Agenda:
+- Brief discussion about some sort of SYNC
+    - usual chained plugin issue
 - Let's try and write the spec for GC.
+- We do! https://github.com/containernetworking/cni/pull/981 
+
 
 ## 2023-03-13
 Agenda:
