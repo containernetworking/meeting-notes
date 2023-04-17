@@ -2,6 +2,58 @@
 
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
+## 2023-04-17
+- KubeCon week, kind of quiet.
+- PR 873 is merged.
+    - Let's try and do a release in the next few weeks.
+- https://github.com/containernetworking/cni/pull/981 has feedback, let's address it
+- We button up some of the wording for GC
+- Review some PRs. Merge some of them.
+
+
+## 2023-04-10
+Agenda:
+- https://github.com/containernetworking/plugins/pull/873
+
+## 2023-04-03
+Agenda:
+- https://github.com/containernetworking/plugins/pull/871
+
+## 2023-03-27
+Agenda:
+- INIT/DE-INIT discussion
+    - Should INIT/DEINIT be per-network, or per-plugin?
+        - Probably per-network... but resources shared across networks? (see DEINIT discussion)
+    - Serialization
+        - Should the runtime be required to serialize calls to a plugin?
+        - Eg can the plugin call INIT for two networks for the same plugin simultaneously, or not
+    - Tomo asked about ordering guarantees; we shouldn't have double-INIT or double-DEINIT
+    - If the config changes, do we DEINIT and then INIT with the new config? That could be very problematic.
+        - Do we need an UPDATE for config change case?
+        - What if the chain itself changes, plugins added/removed?
+    - What if a plugin in the chain fails INIT?
+        - What is the failure behavior if INIT fails?
+        - When does the runtime retry INIT?
+    - What if DEINIT fails?
+        - Should GC be called?
+    - Timing is pretty vague; when should DEINIT be called?
+        - when the network config disappears (deleted from disk, removed from Kube API, etc)
+        - when config disappears *and* all containers using the network are gone?
+        - How should plugins handle deleting resources common to all networks? (eg plugin iptable chain)
+            - Should we require that networks use unique resources to prevent this issue?
+            - And/or punt to plugins that they just have to track/handle this kind of thing
+    - "How do I uninstall a CNI plugin?"
+        - CNI spec doesn't talk about any of this
+        - (partly because we let the runtime decide where config is actually stored, even though libcni implements one method for doing this -- on-disk)
+    - When config gets deleted, how do we invoke DEINIT with the now-deleted config?
+        - Use cached config?
+        - libcni would need to keep cached config after DEL; currently it doesn't
+        - Keep a new kind of "network"-level config for this?
+- PR review
+    - https://github.com/containernetworking/plugins/pull/867 (MERGED)
+    - https://github.com/containernetworking/plugins/pull/855 (MERGED)
+
+
 ## 2023-03-20
 Agenda:
 - Brief discussion about some sort of SYNC
