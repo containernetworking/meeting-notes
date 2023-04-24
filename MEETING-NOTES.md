@@ -2,6 +2,23 @@
 
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
+## 2023-05-1
+
+- What should GC do if INIT fails
+    
+
+## 2023-04-24
+- plugins will be released next week
+- We review some PRs:
+    - https://github.com/containernetworking/plugins/pull/829
+    - https://github.com/containernetworking/plugins/pull/880
+    - https://github.com/containernetworking/plugins/pull/888
+    - https://github.com/containernetworking/plugins/pull/887
+    - https://github.com/containernetworking/plugins/pull/885
+    - https://github.com/containernetworking/plugins/pull/837 (needs rebase)
+    - https://github.com/containernetworking/plugins/pull/883
+    - https://github.com/containernetworking/cni/pull/967
+
 ## 2023-04-17
 - KubeCon week, kind of quiet.
 - PR 873 is merged.
