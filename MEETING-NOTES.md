@@ -2,9 +2,25 @@
 
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
+## 2023-05-8
+
+Agenda:
+- [tomo] What should GC(de-INIT) do if INIT fails
+- What parallel operations should be allowed?
+    - Can you GC and ADD / DEL at the same time?
+    - No way; the runtime has to "stop-the-world"
+    - This makes sense, "network-wide" operations can be thought of as touching "every" attachment, and we don't allow parallel operations on an attachment.
+    - 
+- [cdc] Sorry, I owe a release
+- [aojea] Evolve CNI to support new demands https://github.com/containernetworking/cni/issues/785#issuecomment-1532106958
+    - We talk about the difference between the "configuration" API vs. the plugin API
+    - Everyone seems to settle on CNI via the CRI
+    - Casey drafted a version of this: https://hackmd.io/@squeed/cri-cni
+    - 
+
 ## 2023-05-1
 
-- What should GC do if INIT fails
+- Labor day
     
 
 ## 2023-04-24
