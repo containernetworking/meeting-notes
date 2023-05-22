@@ -2,7 +2,23 @@
 
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
-## 2023-05-8
+During the meeting, the notes are accessible via https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w.
+
+## 2023-05-15
+
+- [cdc] we cut a release! yay!
+- [cdc] Chatting with Multus implementers about [version negotiation](https://github.com/containernetworking/cni/issues/941)
+    - Should we just do this automatically? We already have the VERSION command...
+    - Everyone is uncomfortable with "magic" happening without someone asking for it
+    - Original proposal was for cniVersions array.
+    - What if we added "auto" as a possible cni version?
+    - Concern: how do we expose what version we decided to use?
+    - Or what if we just autonegotiate all the time
+        - YOU GET A NEW VERSION! YOU GET A NEW VERSION!
+    - 
+
+
+## 2023-05-08
 
 Agenda:
 - [tomo] What should GC(de-INIT) do if INIT fails
