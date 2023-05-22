@@ -4,6 +4,35 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 
 During the meeting, the notes are accessible via https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w.
 
+## 2023-05-22
+
+
+- [aojea] follow CNI conversation from 2023-05-08
+    - hard to land important changes on CRI API
+    - For configuration understand existing kubelet subsystems like "kubelet devices plugins" and "DirectResourceAllocation" to align and being able to plug CNI
+        - New KEP to use QoS https://github.com/kubernetes/enhancements/pull/3004#discussion_r1179519017
+        - We look at the DRA design to see how it fits CNI: https://kubernetes.io/docs/concepts/scheduling-eviction/dynamic-resource-allocation/
+        - KEP: https://github.com/kubernetes/enhancements/blob/master/keps/sig-node/3063-dynamic-resource-allocation/README.md
+            - (No mention of sandbox creation)
+        - Could we make a CNI DRA driver?
+            - Only if the lifecycle matches exactly what we need
+                - We can't create network interfaces until the network namespace exists
+                - the network namespace is created with the PodSandbox (a.k.a pause container)
+                - Current order: 
+                    1. Pod created.
+                    2. kubelet calls CreatePodSandbox CRI method...
+                    3. containerd creates netns
+                    4. containerd calls CNI ADD
+                    5. CreatePodSandbox done, Containers now created and started
+        - The DRA object model looks really good
+            - it has the ability to have arbitrary parameters a.k.a. ResourceClaimTemplate, which would be nice
+            - what if we have a CNI plugin that needs devices created from additional DRA providers?
+    - For improving supportability improve kubelet check https://github.com/containernetworking/cni/issues/859
+    - MZappa great diagram https://drive.google.com/file/d/1TTTM2YP67J4mjG4BchNyEmEi1nXKHtfN/view
+- [cdc] GC is stalled, but should have time in 2-3 weeks to work on it
+- [cdc] anyone have time to work on status? https://github.com/containernetworking/cni/issues/859
+- let's turn off the github auto-staler, it's being mean
+
 ## 2023-05-15
 
 - [cdc] we cut a release! yay!
