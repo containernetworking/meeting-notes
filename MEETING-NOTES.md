@@ -2,7 +2,28 @@
 
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
-During the meeting, the notes are accessible via https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w.
+An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
+to add agenda items there.
+
+## 2023-06-12
+- We will work on initial wording of the STATUS verb
+
+## 2023-06-05
+- PTAL: https://github.com/containernetworking/cni.dev/pull/119
+    - cdc observes we're due for some website maintainance
+- [aojea] - more on CNI status checks
+            - dryRun option?
+- We would really like the STATUS verb
+    - It would solve an annoying user situation
+    - Let's do it.
+    - Next week we'll sit down and hammer out the spec.
+    - https://github.com/containernetworking/cni/issues/859
+        - strawman approach: kubelet (networkReady) -- CRI --> container_runtime -- (exec) --> CNI STATUS
+        - runtimes should use the version to use the new VERB  
+- See if GC spec needs any changes: https://github.com/containernetworking/cni/pull/981
+    - We need wording for paralleization:
+    - The container runtime must not invoke parallel operations for the same container, but is allowed to invoke parallel operations for different containers. This includes across multiple attachments.
+    - **Exception**: The runtime must exclusively execute either _gc_ or _add_ and _delete_. The runtime must ensure that no _add_ or _delete_ operations are in progress before executing _gc_, and must wait for _gc_ to complete before issuing new _add_ or _delete_ commands.
 
 ## 2023-05-22
 
