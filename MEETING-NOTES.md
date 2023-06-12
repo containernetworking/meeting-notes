@@ -6,7 +6,73 @@ An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel fre
 to add agenda items there.
 
 ## 2023-06-12
-- We will work on initial wording of the STATUS verb
+- Brief discussion about CNI and CRI for old time's sake
+- We will work on initial wording of the [STATUS](https://github.com/containernetworking/cni/issues/859) verb
+    - presented in [sig-network meeting last Thursday](https://docs.google.com/document/d/1_w77-zG_Xj0zYvEMfQZTQ-wPP4kXkpGD8smVtW_qqWM)
+
+
+### Status
+
+#### Questions:
+
+1. What do we return? Just non-zero exit code? OR JSON type?
+    - We should return a list of conditions
+    - Conditions: (please better names please)
+        - AddReady
+        - RoutingReady (do we need this)?
+        - ContainerReady
+        - NetworkReady
+2. Should we return 0 or non-zero?
+    - after a lot of discussion, we come back to returning nothing on success and just error
+
+
+#### Draft spec:
+
+#### `STATUS`: Check plugin status
+`STATUS` is a way for a runtime to determine the readiness of a network plugin.
+
+A plugin must exit with a zero (success) return code if the plugin is ready to service ADD requests. If the plugin is not able to service ADD requests, it must exit with a non-zero return code and output an error on standard out (see below).
+
+The following error codes are defined in the context of `STATUS`:
+
+- 50: The plugin is not available (i.e. cannot service `ADD` requests)
+- 51: The plugin is not available, and existing containers in the network may have limited connectivity
+
+Plugin considerations:
+- Plugins should always expect other CNI operations (like `ADD`, `DEL`, etc) even if `STATUS` returns an error. `STATUS` does not prevent other runtime requests.
+- If a plugin relies on a delegated plugin (e.g. IPAM)
+
+
+Runtime considerations:
+- A runtime should periodically call `STATUS`, for example every 30 seconds or so
+
+
+**Input:**
+
+The runtime will provide a json-serialized plugin configuration object (defined below) on standard in.
+
+Optional environment parameters:
+- `CNI_PATH`
+
+
+
+#### References:
+
+CRI API 
+https://github.com/kubernetes/cri-api/blob/e5515a56d18bcd51b266ad9e3a7c40c7371d3a6f/pkg/apis/runtime/v1/api.proto#L1480C1-L1502
+
+```
+message RuntimeCondition {
+    // Type of runtime condition.
+    string type = 1;
+    // Status of the condition, one of true/false. Default: false.
+    bool status = 2;
+    // Brief CamelCase string containing reason for the condition's last transition.
+    string reason = 3;
+    // Human-readable message indicating details about last transition.
+    string message = 4;
+}
+```
 
 ## 2023-06-05
 - PTAL: https://github.com/containernetworking/cni.dev/pull/119
