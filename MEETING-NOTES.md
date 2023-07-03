@@ -3,7 +3,36 @@
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
-to add agenda items there.
+to add agenda items there
+
+## 2023-07-03
+
+- CNI Route type and MTU https://github.com/containernetworking/cni/issues/1004
+    - previous effort stalled out at https://github.com/containernetworking/cni/pull/831
+    - no opposition, let's try and get this in for v1.1
+- Easy-to-review PR list (by Tomo)
+    * https://github.com/containernetworking/plugins/pull/902
+        * includes https://github.com/containernetworking/plugins/pull/920
+    * https://github.com/containernetworking/plugins/pull/918
+    * https://github.com/containernetworking/plugins/pull/912
+    * https://github.com/containernetworking/plugins/pull/911
+    * https://github.com/containernetworking/plugins/pull/907
+    * https://github.com/containernetworking/plugins/pull/897 
+    * https://github.com/containernetworking/cni.dev/pull/122
+- AI: Tomo review: https://github.com/containernetworking/plugins/pull/903
+- Finalize CNI STATUS verb
+    - https://github.com/containernetworking/cni/pull/1003
+
+
+## 2023-06-26
+- Let's review some PRs
+- multi-network chit chat
+
+## 2023-06-19
+- Continuing STATUS editing
+- Tomo asks about version divergence between a plugin and its delegate. We talk about version negotiation.
+- Circle back for CNI+CRI
+- Update: we file https://github.com/containernetworking/cni/pull/1003
 
 ## 2023-06-12
 - Brief discussion about CNI and CRI for old time's sake
@@ -36,16 +65,12 @@ A plugin must exit with a zero (success) return code if the plugin is ready to s
 The following error codes are defined in the context of `STATUS`:
 
 - 50: The plugin is not available (i.e. cannot service `ADD` requests)
-- 51: The plugin is not available, and existing containers in the network may have limited connectivity
+- 51: The plugin is not available, and existing containers in the network may have limited connectivity.
 
 Plugin considerations:
-- Plugins should always expect other CNI operations (like `ADD`, `DEL`, etc) even if `STATUS` returns an error. `STATUS` does not prevent other runtime requests.
-- If a plugin relies on a delegated plugin (e.g. IPAM)
-
-
-Runtime considerations:
-- A runtime should periodically call `STATUS`, for example every 30 seconds or so
-
+- Status is purely informational. A plugin MUST NOT rely on `STATUS` being called.
+- Plugins should always expect other CNI operations (like `ADD`, `DEL`, etc) even if `STATUS` returns an error.`STATUS` does not prevent other runtime requests.
+- If a plugin relies on a delegated plugin (e.g. IPAM) to service `ADD` requests, it must also execute a `STATUS` request to that plugin. If the delegated plugin return an error result, the executing plugin should return an error result.
 
 **Input:**
 
