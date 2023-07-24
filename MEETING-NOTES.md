@@ -5,6 +5,27 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2023-07-24
+
+- Multinetwork report from Pete White
+    - MikeZ is meditating on how it fits in with the CRI
+- STATUS verb (PR [1003](https://github.com/containernetworking/cni/pull/1003)) (Issue [859](https://github.com/containernetworking/cni/issues/859))
+- The problem: plugins don't know whether they should use legacy (write file when ready) behavior versus rely on STATUS
+- Potential solutions:
+    - CRI signals whether or not it supports STATUS via config file or something (discussed in issue [927](https://github.com/containernetworking/cni/issues/927))
+        - Biggest blocker for a feature file is downgrades
+    - Add an additional directory, "cniv1.1", that is only read by cni clients
+    - Plugins write a file that is invalid for v1.0, but valid for v1.1, when status is failing
+    - Switch to a new directory entirely
+    - New filename suffix (.conflistv1.1)
+        - Not a terrible idea
+- reviewers wanted: https://github.com/containernetworking/plugins/pull/921
+- Review of PRs, looking in pretty good shape
+
+## 2023-07-17
+
+- Regrets: Tomo
+
 ## 2023-07-03
 
 - CNI Route type and MTU https://github.com/containernetworking/cni/issues/1004
