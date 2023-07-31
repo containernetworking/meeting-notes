@@ -5,6 +5,26 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2023-07-31
+
+- Discussion w.r.t.: https://github.com/containernetworking/cni/issues/927
+    - Background: how do we tell what version if config to install?
+    - We talk about adding more information to the VERSION command; could do things like discovering capabilities
+    - Dream about executing containers instead of binaries on disk
+        - (wow, it's like a shitty PodSpec! But still very interesting)
+    - Remove as much as possible from CNI configuration, make it easy for administrators
+    - Hope that multi-networking will make it easier for admins to push out network changes
+    - How does one feel about version autonegotiation
+        - let's do it
+- CNCF graduated project?
+    - requirements: https://github.com/cncf/toc/blob/main/process/graduation_criteria.md#graduation-stage
+    - no real opposition, just not high on the list
+- nftables! (FYI) https://github.com/containernetworking/plugins/pull/935
+    - We talk about whether it is safe to rely on IP addresses being cleaned up between DEL and ADD
+    - libcni always deletes chained plugins last-to-first to avoid this very issue... except not quite
+    - ~~Thus, it is potentially safe to delete map entries solely by IP address~~
+- Is it safe to rely on IP addresses always being cleaned up?
+
 ## 2023-07-24
 
 - Multinetwork report from Pete White
