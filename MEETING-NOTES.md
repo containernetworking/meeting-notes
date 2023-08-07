@@ -5,6 +5,22 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2023-08-07
+
+- Reviving version negotiation
+    - Casey's proposal: a configlist without a version uses VERSION to pick the highest one
+    - This means that administrators don't have to pick a version, which requires understanding too many disparate components
+- Can we rely on IPs never being used?
+    - Nope, you have to use the ContainerID
+    - No good way around it
+- CNCF graduation?
+    - MikeZ reached out about security audit, need to add the "best practices" badge
+- We merge the GC spec
+    - woohoo!
+- Casey looks at PR https://github.com/containernetworking/plugins/pull/936/files and is a bit surprised at how many bridge VLAN settings there are
+    - Could we get some holistic documentation of these options?
+    - 
+
 ## 2023-07-31
 
 - Discussion w.r.t.: https://github.com/containernetworking/cni/issues/927
