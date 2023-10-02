@@ -3,7 +3,113 @@
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
-to add agenda items there
+to add agenda items there.
+
+## 2023-10-02
+- Aojea has questions about ContainerD sandbox API
+    - Shouldn't affect CNI; just uses Sandbox api instead of runc / OCI
+- https://github.com/containernetworking/cni/pull/1022 : GC PR
+- Review outstanding TODOs for v1.1
+    - https://github.com/containernetworking/cni/milestone/9
+    - Looking good. We push INIT to v1.2
+- PR: https://github.com/containernetworking/cni/pull/1024
+
+## 2023-09-25
+- Attendance: Doug, Michael Cambria, Antonio, Dan Williams , Dan Winship 
+- Tomo: maintainer
+    - If not discussed this meeting Tomo will open a PR for github discussion
+    - resolved: files PR to add to maintainer list
+    - https://github.com/containernetworking/cni/pull/1024
+- Doug: High level question, what do you all think about K8s native multi-networking?
+    - Giving a talk with Maciej Skrocki (Google) at Kubecon NA on K8s native multi-networking
+    - I want to address "what's the position from a CNI viewpoint?"
+    - My point is: We kinda of "ignore CNI as an implementation detail"
+        - But! ...It's an important ecosystem.
+    - Multus is kind of a "kubernetes enabled CNI runtime" -- or at least, users treat it that way
+        - Should it continue to function in that role?
+        - Should CNI evolve to have the "kubernetes enabled" functionality?
+        - What do you all think?
+    - CNI has always supported multinetworking (especially: rkt)
+        - And K8s has taken almost 10 years!
+        - Mike brings up, that it's really that the runtime insisted on doing only one interface.
+        - Doug asks is it the runtime should be enabled with the functionality
+            - What about dynamic reconfiguration
+        - Mike Z mentions he's working on the CRI side, executing multiple cni
+            - Pod sandbox status, to relay multiple IPs back, and the network names
+            - Node network interface(NRI) doesn't have a network domain
+            - Network domain hooks pre-and-post 
+            - This is happening outside of the k8s space.
+            - Use cases outside of Kubernetes, as well.
+            - Custom schedulers for BGP, OSPF, etc.
+        - Mike C brings up consideration of scheduling a pod with knowledge of which networks will be available.
+    - Re: STATUS
+        - Progrmatically distributing network configuration, and 
+            - that problem appears in single network as well, and has relation to STATUS
+    - Antonio brings up, what percent of community benefits from multiple interfaces?
+    - CNI has been surprisingly static in the face of other changes (e.g. kubenet -> [...])
+- Doug: Also any updates in Kubecon NA maintainer's summit?
+    - no maintainers going :-(
+- Back to STATUS?
+    - Sticking point: how do you know whether or not to rely on STATUS -- as a plugin that automatically writes a configuration file
+    - Idea: version negotiation when cniVersion is empty
+        - This works if CRI-O / containerd ignore conflist files w/o a cniVersion
+        - Casey to experiment
+    - Still doesn't solve the problem of plugins knowing which value to use
+- How do we know that a node supports v1.1 (and thus uses STATUS)?
+    - sweet, the ContainerD / CRI-O version is exported in the Node object
+    - Ugly, but heuristics will work
+- draft GC PR: https://github.com/containernetworking/cni/pull/1022
+    - of interest: deprecate PluginMain(add, del, check) b/c signature changes stink
+- 
+
+## 2023-09-18
+- Attendance: Tomo, Antonio, Henry Wang, Dan Williams, Dan Winship
+- Network Ready
+    - Now: have a CNI config file on-disk
+    - Container Runtimes: containerd and crio reply NetworkReady through CRI based on the existing of that file
+    - When CNI plugin can't add interfaces to new Pods, we want the node to be no-schedule TODO(aojea) if condition Network notReady = tainted
+        - Only way to currently indicate this is the CNI config file on-disk
+        - Can't really remove the config file to indicate readiness (though libcni does cache config for DEL)
+    - One option: enforce STATUS in plugin by always writing out CNI config with CNIVersion that includes status
+        - Runtimes that don't know STATUS won't parse your config and will ignore your plugin
+        - Downside: you have to know the runtime supports STATUS
+        - Downside: in OpenShift upgrades, old CRIO runs with new plugin until node reboot, this would break that. You'd have to have a window where the runtime supported STATUS but your plugin didn't use it yet. Then 2 OpenShift releases later you can flip to requiring STATUS.
+
+## 2023-09-11
+- KubeCon NA: maintainer's summit?
+    - Usually we can book these (might be a bit too late though)
+- PR Update:
+    - https://github.com/containernetworking/plugins/pull/921
+        - Tomo approved
+
+## 2023-09-04 (Labour day in US/Canada)
+- Attendance: Casey, Peter, Tomo
+- Question for the US people: KubeCon maintainer's summit?
+    - Definite topic for next week
+- Tomo: maintainer
+    - will discuss next week
+- 
+
+## 2023-08-28
+- Attendance: Antonio, MikeZ, Tomo
+- Discussion about NRI/multi-network design
+
+## 2023-08-21
+- Attendance: Antonio, Peter, Dan Winship, Tomo
+- Mike Zappa is likely to write down KEP for kubernetes CRI/CNI/NRI to handle cases like multi network
+- Current multinetwork approach for the KEP is focusing on API phases
+- Follow STATUS PR: https://github.com/containernetworking/cni/pull/1003
+
+## 2023-08-14
+- CDC on vacation next two weeks
+- Milestone review -- https://github.com/containernetworking/cni/milestone/9
+    - we close out a few proposals that have been rejected
+- Further disussion for CNI over CRI
+    - NRI: node resource interface: a series of hooks
+        - https://github.com/containerd/nri
+    - It could make sense for networking to be integrated in NRI
+    - NRI has no networking support / domain right now; could be conceivably expanded
+    - Network Service for Containerd
 
 ## 2023-08-07
 
