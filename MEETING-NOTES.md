@@ -5,6 +5,19 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2023-10-09
+- We get distracted talking about multi-network and DNS responses
+    - AI: Tomo will create doc (problem statement)
+- [Tomo] https://github.com/containernetworking/plugins/issues/951
+    - should we support that? 
+    - config name / semantic both are weird...
+    - Todo: Ask them about that in next 
+- [Tomo] Request from kubevirt community
+    - support non-interface specific sysctl params in `tuning` (with as stand-alone, not meta plugin)
+    - Todo: Ask them about that in next 
+    - note: tuning currently allows anything in /proc/sys/net
+- [cdc] re-review GC (https://github.com/containernetworking/cni/pull/1022)
+
 ## 2023-10-02
 - Aojea has questions about ContainerD sandbox API
     - Shouldn't affect CNI; just uses Sandbox api instead of runc / OCI
