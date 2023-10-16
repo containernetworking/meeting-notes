@@ -5,6 +5,17 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2023-10-24
+- [Tomo] Writing DNS Doc...
+
+## 2023-10-16
+NOTE: jitsi died, https://meet.google.com/hpm-ifun-ujm
+- [PeterW] Multi-network update
+    - KEP-EP heading towards Alpha
+    - 
+- GC is merged!
+- 
+
 ## 2023-10-09
 - We get distracted talking about multi-network and DNS responses
     - AI: Tomo will create doc (problem statement)
