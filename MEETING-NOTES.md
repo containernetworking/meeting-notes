@@ -5,8 +5,34 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
-## 2023-10-24
-- [Tomo] Writing DNS Doc...
+## 2023-11-13
+- [Tomo] PR / Issue
+    - https://github.com/containernetworking/plugins/issues/973 (to close)
+    - https://github.com/containernetworking/cni/pull/1038 (simple fix)
+    - https://github.com/containernetworking/cni/pull/1039 (supersedes PR#1035)
+
+## 2023-11-06
+- Do some PR reviews (it's kubecon week)
+
+## 2023-10-30
+- [Tomo] PR review: CNI repo change to omit DNS in CNI Conf and Result (1.0.0 only)
+    - Currently DNS field is 'omitempty' but not pointer, hence empty structure is returned
+    - https://github.com/containernetworking/cni/pull/1035
+    - Supersedes https://github.com/containernetworking/cni/pull/1007 (that changes to DNS Conf side)
+- [PeterW] Reference multi-network design doc: https://docs.google.com/document/d/1oVOzlX4nDMyQM6VWJzqMO02FJDYaPb-FgD_88LkXjkU/edit#heading=h.m758iblg0in4
+
+## 2023-10-23
+- [Tomo] (TODO)Writing DNS Doc...
+    - Discovery: DNS type is not currently called out as optional, it should be
+    - 
+- [Ed] Request from kubevirt community
+    1. https://github.com/containernetworking/plugins/issues/951 (activateInterface option for bridge CNI plugin)
+    2. support non-interface specific sysctl params in `tuning` (with as stand-alone, not meta plugin)
+    - note: tuning currently allows anything in /proc/sys/net
+- [Casey] Status PRs are ready for review
+    - https://github.com/containernetworking/cni/pull/1003
+    - https://github.com/containernetworking/cni/pull/1030
+
 
 ## 2023-10-16
 NOTE: jitsi died, https://meet.google.com/hpm-ifun-ujm
