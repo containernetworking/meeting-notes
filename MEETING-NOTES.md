@@ -5,11 +5,50 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2023-11-27
+- CNI 2.0 Note Comparison [Zappa]
+    - [KNI Design proposal](https://docs.google.com/document/d/1Gz7iNtJNMI-zKJhaOcI3aflPCx3etJ01JMxzbtvruKk/edit/)
+    - Mike Z is going to do further work on gRPC in the container runtime to see if it fits conceptually once its in there.
+    - Key points:
+        - Something like this exists in some private forks
+        - 
+- Extra metadata on CNI result [Zappa]
+- KubeCon EU Presentation? (skipped / next time) (From Tomo)
+    - Tomo is out but Doug said he'd bring this up.
+    - usual (not community one) CFP deadline is Nov 26.
+    - CNI1.1 talk?
+    - No one has the dates for the maintainer track CFP due date, but Casey's going to ask around about it.
+- CNI 2.0 requirements discussion (We should still discuss 1.1) [Zappa]
+- Extra metadata on CNI result
+    -
+
+## 2023-11-20
+- KubeCon EU Presentation? (skipped / next time)
+    - usual (not community one) CFP deadline is Nov 26.
+    - CNI1.1 talk?
+    - CNI 2.0 requirements discussion (We should still discuss 1.1) [Zappa]
+    - Extra metadata on CNI result
+- [Tomo] PR / Issue (follow-up)
+    - https://github.com/containernetworking/cni/pull/1038 (simple fix)
+    - https://github.com/containernetworking/cni/pull/1039 (supersedes PR#1035)
+    - https://github.com/containernetworking/plugins/pull/921 (support exclude subnets in bandwidth plugin)
+    - https://github.com/containernetworking/cni.dev/pull/130 (bandwidth plugin doc change)
+- [MikeZ] CNI 2.0 discussion
+
 ## 2023-11-13
 - [Tomo] PR / Issue
     - https://github.com/containernetworking/plugins/issues/973 (to close)
     - https://github.com/containernetworking/cni/pull/1038 (simple fix)
     - https://github.com/containernetworking/cni/pull/1039 (supersedes PR#1035)
+    - https://github.com/containernetworking/plugins/pull/974 (Add v6 disc_notify in macvlan)
+    - https://github.com/containernetworking/plugins/pull/979 (Add v6 disc_notify in ipvlan)
+    - https://github.com/containernetworking/plugins/pull/969 (required for future CNI vendor update)
+    - https://github.com/containernetworking/plugins/pull/962 (remove unused code)
+    - https://github.com/containernetworking/plugins/pull/921 (support exclude subnets in bandwidth plugin)
+    - https://github.com/containernetworking/cni.dev/pull/130 (bandwidth plugin doc change)
+- [cdc] STATUS implementation: https://github.com/containernetworking/cni/pull/1030
+    - and SPEC: https://github.com/containernetworking/cni/pull/1003
+
 
 ## 2023-11-06
 - Do some PR reviews (it's kubecon week)
