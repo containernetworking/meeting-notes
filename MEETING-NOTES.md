@@ -5,6 +5,27 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2023-12-11
+- PR:
+    - https://github.com/containernetworking/cni/pull/1039 (remind)
+    - https://github.com/containernetworking/plugins/pull/921 (follow-up to MikeZ)
+- v1.1 blockers https://github.com/containernetworking/cni/milestone/9
+    - only big question is cni versions (https://github.com/containernetworking/cni/pull/1010) MERGED
+    - and route MTU: https://github.com/containernetworking/cni/pull/1041
+- Metadata Proposal Discussion [Zappa]
+- Review https://github.com/jasonliny/tag-security/blob/main/assessments/projects/cni/self-assessment.md
+    - Idea: we should not allow delegated plugins outside of CNI_BINDIR
+    - We talk about how delegated plugins are totally dangerous and we should be more careful
+
+
+## 2023-12-04
+- [cdc] need to cut a plugins release
+    -  (grump about CVE scanners)
+    -  last PR sweep
+    -  cdc to cut release shortly
+- CNCF TAG Security: working on a self-assessment for CNI, which will be submitted to TAG Security (details here:  https://github.com/cncf/tag-security/issues/1102)
+    - We would appreciate some feedback, as we suspect there may be misunderstandings or inaccurate information in our current draft (https://github.com/jasonliny/tag-security/blob/main/assessments/projects/cni/self-assessment.md)
+
 ## 2023-11-27
 - CNI 2.0 Note Comparison [Zappa]
     - [KNI Design proposal](https://docs.google.com/document/d/1Gz7iNtJNMI-zKJhaOcI3aflPCx3etJ01JMxzbtvruKk/edit/)
@@ -18,9 +39,8 @@ to add agenda items there.
     - usual (not community one) CFP deadline is Nov 26.
     - CNI1.1 talk?
     - No one has the dates for the maintainer track CFP due date, but Casey's going to ask around about it.
-- CNI 2.0 requirements discussion (We should still discuss 1.1) [Zappa]
-- Extra metadata on CNI result
-    -
+- CNI 2.0 requirements discussion (We should still discuss 1.1)
+- [mz] Extra metadata on CNI result
 
 ## 2023-11-20
 - KubeCon EU Presentation? (skipped / next time)
