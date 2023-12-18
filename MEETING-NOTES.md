@@ -5,6 +5,23 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+
+## 2023-12-18
+- PR:
+    - https://github.com/containernetworking/cni/pull/1039 (remind)
+    - https://github.com/containernetworking/plugins/pull/921 (follow-up to MikeZ)
+- Metadata Proposal Discussion [Zappa]
+    - https://github.com/containernetworking/cni/issues/1050
+    - PR: https://github.com/containernetworking/cni/pull/1051
+- New definitions specification update [Zappa]
+    - https://github.com/containernetworking/cni/pull/1053
+- ready to cut 1.1?
+    - https://github.com/containernetworking/cni/milestone/9 was clear
+- Subdir-based plugin conf [Ben L.] [Post 1.1/Jan]
+    - Issue: https://github.com/containernetworking/cni/issues/928
+        - Spec rewrite PR to start convo around details (mostly spec rev. versus none): 
+            - https://github.com/containernetworking/cni/pull/1052
+
 ## 2023-12-11
 - PR:
     - https://github.com/containernetworking/cni/pull/1039 (remind)
