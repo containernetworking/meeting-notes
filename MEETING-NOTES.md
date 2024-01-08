@@ -5,6 +5,34 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-01-15
+- PR's
+- KNI [zappa]
+
+## 2024-01-08
+- Welcome to the New Year!
+- PR:
+    - https://github.com/containernetworking/plugins/pull/844
+        - from the last comment: It's unfortunate that this as been pending so long, it seems like the maintainers are ignoring this or don't find value in this PR 😭
+        - May need to decision (to include/not include?)
+    - https://github.com/containernetworking/plugins/pull/921 (local bandwidth)
+        - Tomo and Mike approved
+        - We will ship this in the next release.
+- CNI 1.1
+    - tag -rc1?
+    - implement in plugins
+    - implement in runtimes (go-cni cri-o)
+- What belongs in CNI v1.2:
+- Metadata [proposal](https://github.com/containernetworking/cni/issues/1050)
+    - conclusion: this seems worthy, let's expore it
+    - come up with some use cases, draft a SPEC change
+- multi-ADD / idempotent ADD / reconfigure
+    - wellllll, k8s doesn't have network configuration, so how can we *reconfigure* what we don't have?
+    - Pete to write up proposal?
+- [bl] QQ: Config versioning 
+    - Do we distinguish between config file and config (in-mem) schema versions, or are they always 1:1 in the spec?
+
+
 
 ## 2023-12-18
 - PR:
