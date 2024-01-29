@@ -5,9 +5,49 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
-## 2024-01-15
+## 2024-01-29
 - PR's
-- KNI [zappa]
+    - Add Github action to build binary at tag release https://github.com/containernetworking/plugins/pull/1000
+    - bridge: Enable disabling bridge interface: https://github.com/containernetworking/plugins/pull/997
+    - Initial attempt to support loading plugins from subdirectories: https://github.com/containernetworking/cni/pull/1052
+        - Hypothetical impl there now, PTAL & offer opinions
+- (if time, otherwise defer) Conf vs Conflist in libcni [bl]
+    - only conflist is supported by current spec, and that has been true for some time.
+    - looking for historical context on current state 
+    - should we mark conf as deprecated, and remove on major bump? Given the above, that seems reasonable.
+    - Decision: Even though the pre-1.0.0 format is deprecated, we cannot remove it yet.
+- Metadata 
+    - Socket Path
+    - pciid
+- Convention for results from device plugins [cdc, others]
+    - Should we make it easy for containerd / crio to pass devices ti plugins?
+    - Prefer to phased approach
+        - phase1: Just formalize in cni repo and change multus/sr-iov
+        - phase2: Integrate cni runtime as well as container runtime
+            - CDI
+- Add MTU to the interface results in the CNI
+    - https://github.com/containernetworking/cni/blob/main/pkg/types/100/types.go#L272
+- annoying that spec v1.0 is library v1.1
+    - Do we split spec repo and library?
+    - What if we skip v1.1 and move to v1.2?
+- KNI
+    - 
+
+## 2024-01-22
+- PR's
+    - Add Github action to build binary at tag release https://github.com/containernetworking/plugins/pull/1000
+    - Initial attempt to support loading plugins from subdirectories: https://github.com/containernetworking/cni/pull/1052
+        - Hypothetical impl there now, PTAL & offer opinions
+- (if time, otherwise defer) Conf vs Conflist in libcni [bl]
+    - only conflist is supported by current spec, and that has been true for some time.
+    - looking for historical context on current state 
+    - should we mark conf as deprecated, and remove on major bump? Given the above, that seems reasonable.
+- Metadata 
+    - Socket Path
+    - pciid
+
+## 2024-01-15
+- US Holiday, cdc out too
 
 ## 2024-01-08
 - Welcome to the New Year!
