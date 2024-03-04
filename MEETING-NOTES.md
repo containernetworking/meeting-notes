@@ -5,6 +5,106 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+
+## 2024-03-04
+
+- PR Review:
+    - https://github.com/containernetworking/cni/pull/1069
+    - https://github.com/containernetworking/cni/pull/1052
+        - getting close to the end :-)
+    - 
+
+- Discussions:
+    - CNI cached directory questions 
+        - Why is the cached directory not on volatile storage?
+            - because we try and pass the same values to DEL as to ADD, even after a reboot
+        - But we sometimes fail to delete because of invalid cache :-)
+            - We should handle this case gracefully, same as a missing cache file
+        - Casey wonders: How do we handle this for GC?????
+    - [Zappa] go-cni PR for Status [draft]
+    - [Zappa] go-cni PR for additional fields [draft]
+    - need same work for CRI-O, where are you, Jaime?
+    - [cdc] Device conventions: https://github.com/containernetworking/cni/issues/1070
+    - [cdc] working on CNI v1.1 for plugins, slowly
+    - Kubecon Talk: What did we do????????
+        - CNI v1.0
+            - no .conf files
+            - CHECK
+        - CNI v1.1 -- lots of new features
+            - GC, SATUS
+            - - more types
+        - KNI?
+        - What do people actually want? What verbs should come next?
+            - FINALIZE?
+        - Hey multi-networking, please figure out how to configure CNI via k8s API plz thanks
+
+
+## 2024-02-26
+
+- PR Review:
+    - [Draft] https://github.com/containernetworking/cni/pull/1069
+        - Need to provide definitions in the spec for both fields
+    - [LFR] https://github.com/containernetworking/cni/pull/1052
+        - Updated to invert flag logic (enabled by default)
+
+- Discussions:
+    - [Zappa] Noticed uptick of issues around /var/lib/cni/results 
+        - Unable to delete pods (+ip address)
+    - [cdc] Help wanted: plugins v1.1 impl.
+        - Open issues: https://github.com/containernetworking/plugins/milestone/6
+    - [cdc] Any ideas on device convention? https://github.com/containernetworking/cni/issues/1070
+    - [aojea] STATUS implementation
+        - I have some volunteers but I need to provide some guidance
+            - Casey/Zappa have branches for this 
+
+## 2024-02-19
+
+- US Holiday (ish)
+- PR review:
+  - https://github.com/containernetworking/cni/pull/1062
+  - https://github.com/containernetworking/cni/pull/1068
+      - both look good, need integer pointers and the implementation in plugins
+  - https://github.com/containernetworking/cni/pull/1052
+  - https://github.com/containernetworking/cni/pull/1060 (mtu on interface).
+  - https://github.com/containernetworking/plugins/pull/1003
+- CNI v1.1 progress
+    - 
+
+## 2024-02-12
+
+- PR's
+  - Support loading plugins from subdirectories: https://github.com/containernetworking/cni/pull/1052
+    - Comments addressed, this now adds a new opt-in config flag rather than forcing more drastic changes to the config spec. PTAL, need Casey/Dan to do a final pass
+- New issues
+- Metadata proposal (fields vs map)
+    - PCIID (to Interface structure)
+    - SocketPath (to Interface structure)
+    - MTU (to Interface structure)
+    - Route table ID (to Route structure)
+        - https://github.com/containernetworking/cni/issues/1061
+        - https://github.com/containernetworking/cni/pull/1062
+    - Route Scope/Flag (to Route structure)
+        - https://github.com/containernetworking/cni/issues/598
+    - Or map[string] string or go with both approaches? 
+- PR review:
+    - https://github.com/containernetworking/plugins/pull/1002 (tomo will review)
+    - https://github.com/containernetworking/plugins/pull/1003 (tomo will review)
+    - 
+
+## 2024-02-05
+- PR's
+    - Support loading plugins from subdirectories: https://github.com/containernetworking/cni/pull/1052
+        - Comments addressed, this now adds a new opt-in config flag rather than forcing more drastic changes to the config spec.
+        - PTAL, need Casey/Dan to do a final pass
+
+- discuss: 
+    - SocketPath/DeviceID aka metadata (need Casey/Dan)
+    - KNI? (need Casey/Dan)
+    - CNI 2.0 / Multi-Network / KNI / DRA / [NRI](https://github.com/containerd/nri) / ? meetup at KubeCon?
+        - Plan/strategy? KNI will probably need a plugin strategy, will probably support CNI plugins, but going forward could support a better/smarter plugin interface.
+    - https://github.com/containernetworking/cni/issues/1061
+    - https://github.com/containernetworking/cni/issues/598
+
 ## 2024-01-29
 - PR's
     - Add Github action to build binary at tag release https://github.com/containernetworking/plugins/pull/1000
