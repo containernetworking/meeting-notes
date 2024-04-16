@@ -5,6 +5,214 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-04-22
+
+- GC doubts: should we add a DisableGC option?
+    - use-case: one network, multiple runtimes
+
+## 2024-04-15
+
+- Tagging v1.1: minor cleanup needed
+- v1.2 milestone:
+    - dropins [https://github.com/containernetworking/cni/pull/1052]
+    - finalize
+    - init?
+    - gRPC
+- FINALIZE discussion
+    - use-cases:
+        - ensuring routes
+        - inserting iptables rules (e.g. service-mesh proxy)
+        - ECMP (eaugh)
+    - lifecycle:
+        1. ADD (network 1)
+        2. ADD (network 2)
+        3. FINALIZE (network 1)
+        4. FINALIZE (network 2)
+        5. later... CHECK
+    - Configuration source:
+        - in-line from config
+        - specific FINALIZE configuration?
+            - maybe not needed.
+            - cri-o / containerd could have a magic dropin directory?
+        - What if a configuration only has FINALIZE plugins?
+            - then we don't ADD, just FINALIZE
+    - What is passed to the plugin(s)?
+        - We could pass *all* results of all networks
+            - Tomo: this is complicated (and plugin could get that by netlink), let's not
+            - fair enough
+        - CNI_IFNAME?
+        - Standard prevResult?
+    - What is returned?
+        - Not allowed to produce result?
+    - Philosophical question: is FINALIZE "network-level" or "container-level"
+        - does it get IFNAME? PrevResult?
+        - Homework: come up with more use-cases.
+    - 
+- [minor] readme PR: https://github.com/containernetworking/cni/pull/1081
+- [minor] licensing question https://github.com/containernetworking/plugins/pull/1021
+- 
+
+## 2024-04-08
+
+PR
+- https://github.com/containernetworking/cni/pull/1054 [approved]
+- Merge today! (or reject today), it is so big and hard to keep in PR list...: https://github.com/containernetworking/plugins/pull/921 [merged]
+- https://github.com/containernetworking/cni/pull/1052 [for 1.2]
+  - Q: should this be a config or not? https://github.com/containernetworking/cni/pull/1052#discussion_r1551653317
+  - A: Consensus seems to be leave in the flag, change the name, maybe add docs around how libcni implements the spec with file loading.
+  - [dougbtv] working on NetworkPlumbing WG proposal to attach secondary networks more granularly
+  - [ben] that sounds good to me, I want to keep this very tightly scoped to avoid main config file contention, more granular behaviors should be handled elsewhere, 100%
+
+Discussion
+- Should 'ready' be both CNI network configuration and binaries present? Right now its just the network config. [Zappa]
+    - [tomo] agreed but need to care UX (how to told this to user)
+        - k8s node object should have error messages ()
+    - [ben] since we can't check much about the binary, this is necessarily a simplistic check that a file exists at the binary path - it could still fail to execute, or be partially copied, etc
+    - [cdc] I wrote the .Validate() libcni function some time ago for this, use it :-)
+- CNI X.Y [Zappa/Casey]
+- Finalize/Init Verb [Zappa]
+- Loopback fun [Zappa]
+
+## 2024-04-01
+No CNI calls today due to Easter holiday, dismiss!
+
+- Headsup:
+    - [squeed] Last call for tagging libcni for v1.1.0 and let's conclude next week meeting, 4/8!!
+
+## 2024-03-25
+
+KubeCon update:
+- It happened
+- Something something DRA?
+- Antonio wants to move network establishment in to device plugins
+- Casey & Tomo's presentation: https://docs.google.com/presentation/d/1eCOFcro7dc9iq3VS-31045EsVUstfqmF/edit?usp=sharing&ouid=110611166904085433395&rtpof=true&sd=true
+CNI v1.1
+- https://github.com/containernetworking/plugins/pull/1021
+    - please review
+- ContainerD STATUS support is in progress
+- Need to do cri-o, multus
+- v1.1 is feature frozen? sure!
+    - Milestone is completed anyway as of today, call it.
+
+CNI v1.2 ideas:
+- drop-in directories
+    - Issue: https://github.com/containernetworking/cni/issues/928
+    - PR: https://github.com/containernetworking/cni/pull/1052
+- Interface metadata
+    - TODO: file issue
+- FINALIZE verb
+    - Problem: we have no inter-container lifecycle guarantees
+    - use-cases:
+        - Ensuring route table is in a defined state
+        - insering iptables rules for proxy sidecar (e.g. Envoy) chaining
+    - Biggest problem: how to configure?
+        - /etc/cni/net.d/_finalize.d/00_istio.{fconf,conf}
+        - Do we use a standardized directory that applies to *all* plugins?
+        - Do we have finalizers per-network, or finalizers after all networks?
+            - Ben: Do we need both, or could we get away with just global finalizers?
+            - Casey, others: We might (for some use cases) actually need per-network.
+            - Which one is less footgunny? Would running finalizers per-network "hide" global state that might make finalizers more likely to break things?
+        - Multus is also trying to add a finalizer pattern, for multiple CNIs - consider how this works as well.
+
+```
+/etc/cni/net.d/00-foobar.conf
+{
+  // usual CNI
+  plugins: [],
+  finalize_plugins: [{"type":"force_route"}] // type a: in CNI config
+}
+
+// type b: drop-in directory
+// should we change '_finalize.d' as configurable?
+
+/etc/cni/net.d/_finalize.d/00-foobar.conf
+{
+  // one finalizer
+}
+
+/etc/cni/net.d/_finalize.d/99-istio.conf
+{
+  // put istio, that wants to be final!
+}
+
+/etc/cni/net.d/_finalize.d/999-barfoo.conf
+{
+  // oh, sorry, it is the actual final guy!
+}
+```
+
+
+## 2024-03-11
+Work on outline for Kubecon project update.
+
+CNI: update, what's next
+- CNI basic overview
+    - CNI is an execution protocol, run by the runtime
+- CNI 1.0
+    - '.conf' file (i.e. single plugin conf) is removed! 
+    - interface has no longer 'version' field (of address)
+- new version CNI 1.1 Update!
+- new verbs
+    - STATUS: replaces "write or delete CNI config file" to signify plugin readiness
+    - GC: clean up leftover resources
+- new fields
+    - route MTU, table, scope
+    - interface MTU, PCIID, socket path
+- cniVersions array
+    - Configuration files can now support multiple supported versions
+- Will be released shortly
+    - implementing v1.1 in plugins now
+    - cri-o, containerd also in-progress
+    - Community question: Should the CRI closer reflect the CNI?
+        - a.k.a. how can I use these shiny new fields?
+        - our opinion: heck yeah! Let's make the CRI more fun
+        - Should we expand v1/PodStatus? MultiNetwork WG is proposing this, :thumbsup: 
+- device capability (not 1.2, but whatever)
+    - Standardized way for devices to be passed down from kubelet -> runtime -> plugin (e.g. SR-IOV)
+    - Still no way for plugins to say they *need* a certain device
+        - Looking for ways to tie config back in to the scheduler
+        - complicated! help wanted!
+
+what's next (for v1.2)
+- drop-in directories (definite)
+    - no more manipulating CNI configuration files
+    - isto community contribution
+- Interface metadata, (likely)
+    - We prefer to have these as fields
+        - We generally have a low threshold for adding a field
+    - But some things are just too weird even for us :p
+- FINALIZE (maybe??)
+    - some kind of post-ADD "finalize" plugin?
+    - called after every ADD of every interface
+    - possible use case: resolve route conflicts
+- INIT (stretch)
+    - Called before first ADD
+    - Not container-specific
+    - Really sorry about this one, Multus
+    - Nasty lifecycle leaks
+- Dynamic reconfiguration (vague idea)
+    - Spec says ADD is **non-idempotent**
+    - But there's no reason this has to be the case
+    - Do you want this? Get involved!!
+
+
+So, what about KNI?
+- KNI is, and is not a replacement for CNI
+    - e.g. KNI proposed to be responsible for isolation domain management
+- KNI extensibility is still a work in progress
+- If KNI merges, the default impl will be containerd / cri-o wrapping CNI
+
+
+Calls to action:
+- This is a dynamic area of k8s right now, lots of things are being proposed
+- CNI fits in a complicated ecosystem (k8s, CNI, CRI, runtimes)
+- There is a lot of room for improvement, but it reaches across a lot of concerns
+- We are all busy, we can't be in all projects at all times
+- Reach out! Let's make features people use!
+
+
+
+
 
 ## 2024-03-04
 
