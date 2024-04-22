@@ -7,8 +7,15 @@ to add agenda items there.
 
 ## 2024-04-22
 
+- We chat about k8s and the DRA
+    - Antonio working on adding netdevs to oci spec
+    - [ben] thinking aloud, if netdev management was done here,
+      would that mean that CNI plugins might become like FINALIZE variants (more or less), basically?
 - GC doubts: should we add a DisableGC option?
     - use-case: one network, multiple runtimes
+
+- dropin (updated, PR review) https://github.com/containernetworking/cni/pull/1052
+- ocicni STATUS and GC PRs: https://github.com/cri-o/ocicni/pull/196, https://github.com/cri-o/ocicni/pull/197
 
 ## 2024-04-15
 
