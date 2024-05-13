@@ -5,6 +5,27 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-05-13
+- Check in on CNI v1.1 runtime implementations
+    - Multus: "primary" network GC, STATUS in progress, no big hurdles. secondary networks trickier (need discussion)
+    - cri-o: oci-cni support has merged, Jaime working on cri-o GC.
+        - Question: when to issue a GC? 
+          Answer: On startup at least, on a timer if you like. Fun would also be on CNI DEL failure. May need to disable GC by explicit config
+    - containerd: PR is pending, stuck on failed CI
+
+## 2024-05-06
+- [Tomo]FYI: CNI 1.1 on multus
+    - https://github.com/k8snetworkplumbingwg/multus-cni/pull/1273
+- [cdc] CNI v1.1 for ocicni is merged https://github.com/cri-o/ocicni/pull/197
+    - TODO: call GC from cri-o. Jaime to take a look
+- [Ben] CNI 1.2 - dropin (updated, LFR PR review) https://github.com/containernetworking/cni/pull/1052
+- [cdc] Discussion: disable GC? https://github.com/containernetworking/cni/issues/1086
+
+## 2024-04-29
+
+- regrets: Tomo (national holiday). Pls ping me @K8s slack
+
+
 ## 2024-04-22
 
 - We chat about k8s and the DRA
@@ -13,6 +34,7 @@ to add agenda items there.
       would that mean that CNI plugins might become like FINALIZE variants (more or less), basically?
 - GC doubts: should we add a DisableGC option?
     - use-case: one network, multiple runtimes
+    - [Tomo]+1
 
 - dropin (updated, PR review) https://github.com/containernetworking/cni/pull/1052
 - ocicni STATUS and GC PRs: https://github.com/cri-o/ocicni/pull/196, https://github.com/cri-o/ocicni/pull/197
