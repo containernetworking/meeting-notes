@@ -5,13 +5,60 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-05-27
+- https://github.com/containernetworking/cni/pull/1052
+    - ready to merge
+    - Will hold off until disableGC is merged and v1.1.1 is cut
+- [tomo] GC Improvement
+    - https://github.com/containernetworking/cni/issues/1091
+    - plugin.GC(config, [validID1])
+        - plugin.GC(configA, [validID1])
+        - plugin.GC(configB, [validID2])
+        - Plugin GC
+            - resource [validID1 + validID2]
+    - plugin.GC(configs, [(validID1, netname1)])
+    - how to identify?
+        - CNI name + container id (as described https://github.com/containernetworking/cni/blob/main/SPEC.md#section-3-execution-of-network-configurations)
+    - AI: need to continue to discuss about it`
+- [miguel] CNI 1.2 STATUS verb
+    - missing updating the CRI-O dependency: https://github.com/cri-o/cri-o/pull/8207
+    - We need to remove an extra conditional, Miguel to file PR
+    - https://github.com/containernetworking/cni/pull/1095
+- [miguel] https://github.com/containernetworking/plugins/pull/1021 status ? (need help w/ this ??)
+    - Extremely!
+    - miguel to split the status part from this PR
+- [jaime] Discussion on GC implementations
+    - Concerns around GC taking a long time, blocking other operations
+    - For now, "safest" time to call is on start-up
+    - Once timing considerations are known, we can consider adding additional calls
+- [zappa] containerd will no longer depend on Loopback plugin :-)
+    - go-cni PR for STATUS and GC is stuck
+    - 
+
+## 2024-05-20
+- Casey on holiday, but we will have the call without him
+- Tagged plugins v1.5.0 (contains "CNI version output" fix)
+- Extend tuning plugin to also support ethtool configuration
+    - [tomo] how about to another CNI plugin ('ethtool' pluign?) because now tuning plugin has a lots of feature...
+    - Could you please file a issue in github!
+- Extend tuning plugin to make configuration also on the host side for veth
+    - Could you please file a issue in github!
+- containerd: PR is pending, stuck on failed CI
+- [Ben] CNI 1.2 - dropin (Reviewed+Approved - probably waiting on Casey to merge) https://github.com/containernetworking/cni/pull/1052
+    - Doc introduced to explain relation of spec to libcni - pls review+comment: https://github.com/containernetworking/cni/pull/1081
+- SBR Table ID: https://www.cni.dev/plugins/current/meta/sbr/#future-enhancements-and-known-limitations
+    - https://github.com/containernetworking/cni/issues/1061 
+- [miguel] how is GC supposed to be used ?? Any docs w/ examples anywhere ? 
+- [Jaime] Q: multus GC status
+
 ## 2024-05-13
 - Check in on CNI v1.1 runtime implementations
     - Multus: "primary" network GC, STATUS in progress, no big hurdles. secondary networks trickier (need discussion)
     - cri-o: oci-cni support has merged, Jaime working on cri-o GC.
         - Question: when to issue a GC? 
           Answer: On startup at least, on a timer if you like. Fun would also be on CNI DEL failure. May need to disable GC by explicit config
-    - containerd: PR is pending, stuck on failed CI
+
+
 
 ## 2024-05-06
 - [Tomo]FYI: CNI 1.1 on multus
