@@ -5,6 +5,47 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-06-03
+- [cdc / lionel] oops, overriding JSONMarshal() breaks types that embed it -- https://github.com/containernetworking/plugins/pull/1050#pullrequestreview-2094114163
+    - oops, gotta fix this :-) tomo to take a look
+    - heck you, struct embedding
+    - https://github.com/containernetworking/cni/issues/1096
+    - Updated: fix PR ready: https://github.com/containernetworking/cni/pull/1097
+- [jaime] cri-o GC call
+    - https://github.com/cri-o/cri-o/pull/8245
+    - Casey PTAL
+    - I won't be able to attend the meeting this week
+- [Tomo] GC Improvelment discussion
+    - Gist: should we add GC for 'CNI Configs', not 'a CNI config' for runtimes with multiple CNI config  (i.e. multus or containerd)
+    - Note: Containerd supports multiple CNI Configs with following config: 
+        ```
+        [plugins."io.containerd.grpc.v1.cri".cni]
+          max_conf_num = 2
+        ```
+        with above config, containerd picks two CNI configs from CNI directory.
+    - Current risk:
+        - As CNI Spec, if plugin identifies attachment uniqueness with "CONTAINER_ID" and "IFNAME", then current GC (validAttachment is identified with "CONTAINER_ID", "IFNAME" AND "CNI network name") may remove valid attachments unexpectedly...
+            - NetA: VA1, VA2
+                - VB1, VB2 seems to be invalid from NetA
+            - NetB: VB1, VB2 
+                - VA1, VA2 seems to be invalid from NetB
+    - Toughts:
+        - keep current one for single CNI
+        - Just add new API `GCNetworkLists(ctx context.Context, net []*NetworkConfigList, args *GCArgs) error`
+            - get CNI Configs
+            - gather each validAttachemnents
+            - for each CNI plugin, call it 
+        - This API also optimizes GC call (i.e. less 'Stop the world')
+        - Required for SPEC:
+            - need to change https://github.com/containernetworking/cni/blob/main/SPEC.md#gc-clean-up-any-stale-resources
+                - from: cni.dev/attachments (array of objects): The list of still valid attachments to this network:
+                - to: cni.dev/attachments (array of objects): The list of still valid attachments in a **runtime**:
+    - Alternate solution: Just recommend not to use GC in multiple CNI config environment
+    - AI:
+        - Add words in SPEC, to mention GC care about not only CONTAINER_ID, IF_NAME and also "CNI network name" (i.e. 'name' in CNI config)
+        - Also mention that current GC is mainly for single CNI config and needs to design GC that supports multiple CNI config 
+- [mz] kubecon roll call!?
+
 ## 2024-05-27
 - https://github.com/containernetworking/cni/pull/1052
     - ready to merge
