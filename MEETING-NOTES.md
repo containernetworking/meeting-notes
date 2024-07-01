@@ -5,6 +5,56 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-07-08
+- [tomo] Multi-gc https://github.com/containernetworking/cni/issues/1091
+
+
+## 2024-07-01
+- [Tomo] cannot make today's call
+- [Ben] merge: https://github.com/containernetworking/cni/pull/1052 for 1.2
+- [cdc] oops, wrong array key in libcni vs. spec: https://github.com/containernetworking/cni/issues/1101
+    - solution: fix spec, set both versions in libcni
+    - https://github.com/containernetworking/cni/pull/1103
+
+## 2024-06-24
+- [Tomo] PR: https://github.com/containernetworking/plugins/pull/1058
+    - and need to release new plugins again for cilium user;) https://github.com/containernetworking/plugins/issues/1053
+- [cdc] 1.2 review
+- 1.1 implementation status
+    - containerd stuck on Masterminds
+    - we fix that!
+
+## 2024-06-17
+- [Tomo] PR: https://github.com/containernetworking/plugins/pull/1054
+- 
+
+## 2024-06-10
+- [Tomo] https://github.com/containernetworking/cni/pull/1097
+    - for issue at prev call  https://github.com/containernetworking/cni/issues/1096
+    - PR pass
+- We merge some PRs for v1.1.1
+    - We will cut v1.1.11.1.1.1.1 shortly, once PRs merge and deps are bumped
+    - Also need wording for "Also mention that current GC is mainly for single CNI config and needs to design GC that supports multiple CNI config"
+- 1.1 runtime checkin
+    - cri-o
+        - STATUS done, GC in progress
+        - 
+    - multus
+        - https://github.com/k8snetworkplumbingwg/multus-cni/pull/1273
+        - still in review...
+    - containerd
+        - hung up on semver replacement
+- 1.2 wishes [milestone](https://github.com/containernetworking/cni/milestone/10)
+    - drop-ins
+        - [ben] just docs but would like to get https://github.com/containernetworking/cni/pull/1081 in too for 1.2 after drop-in merges.
+    - multi-network GC?
+    - INIT
+    - DEINIT
+    - metadata for interface (and more, e.g. address?)
+    - capability/runtimeConfig for deviceID? 
+
+
+
 ## 2024-06-03
 - [cdc / lionel] oops, overriding JSONMarshal() breaks types that embed it -- https://github.com/containernetworking/plugins/pull/1050#pullrequestreview-2094114163
     - oops, gotta fix this :-) tomo to take a look
