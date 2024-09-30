@@ -5,8 +5,130 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there.
 
+## 2024-09-30
+- plugins release: which PRs should get in?
+    - bandwidth fixes (https://github.com/containernetworking/plugins/pull/1100, https://github.com/containernetworking/plugins/pull/1097)
+    - host-device temp netns: https://github.com/containernetworking/plugins/pull/1073
+    - STATUS passthrough to IPAM: https://github.com/containernetworking/plugins/pull/1082
+    - sbr flake https://github.com/containernetworking/plugins/issues/1096
+- [Zappa] propose Lionel/Ben as CNI maintainers
+    - heck yeah!
+- [tomo] CNI2.0 requirement brainstorming
+    - Revisit CNI1.x requirements and check whether it is applicable or not - do people want accomplish these tasks without explicit support in 2.0, and if so, how would they do so. Perhaps frame this as a back compat problem.
+
+        - Chaining
+        - Cached state (for GC)
+        - Return type w/ interfaces & addresses
+        - init
+        - de-init (e.g. events for bridge deletion)
+        - capture interface events? (i.e. v6 SLAAC events)
+        - dynamic changing attribute without ADD/DEL
+            - Route
+            - IP address
+            - MTU
+            - and so on
+            - How 
+                - Adding API verb (CHANGE)?
+                - ADD/DEL for attirubute?
+
+- [lionel] Please continue to review/comment on https://github.com/containernetworking/plugins/issues/1096
+
+
+## 2024-09-23
+
+ 
+
+## 2024-09-16
+- Regrets: Tomo
+- [Lionel] PRs
+    - https://github.com/containernetworking/plugins/pull/1088
+        - merged!
+    - https://github.com/containernetworking/plugins/pull/1087
+        - merged!
+- https://github.com/containernetworking/plugins/pull/935 (nftables) also ready for re-review
+- Status of GC and STATUS:
+    - CRI-O calls status, will call GC "soon"
+    - Containerd? No support for status, PR is https://github.com/containerd/go-cni/pull/114
+    - Multus? STATUS/GC in review.
+        - STATUS/GC support only in clusterNetwork (i.e. eth0)
+- FYI: CNI "support" for DRA being discussed: https://github.com/kubernetes/enhancements/issues/4817
+- 
+    
+## 2024-09-09
+
+- [zappa] moved agenda to next week
+
+## 2024-09-02
+- [zappa] US Holiday
+- [tomo] CNI2.0 requirement brainstorming (skip to next)
+    - Revisit CNI1.x requirements and check whether it is applicable or not
+- [Lionel] PRs (skip to next)
+    - https://github.com/containernetworking/plugins/pull/1088
+    - https://github.com/containernetworking/plugins/pull/1087
+ 
+## 2024-08-26
+- [cdc] can't make it, on train
+- [zappa/lionel] CNI 2.0/DRA brainstorming
+    - ![image](https://hackmd.io/_uploads/rJoRYGciC.png)
+    - How is the DRA driver integrated in the container runtime?
+        - Many ideas from Mike Brown -> Zappa
+    - https://github.com/MikeZappa87/cniv2/blob/main/pkg/types/cni.proto
+    - Add proto for Service mesh or other servers post AddAttachment
+    - need finalizer event as well?
+    - Remove exec model, remove on-disk configs
+    - Need plugin registration method?
+- [tomo] Reviews...
+    - Bridge CNI PR request.
+    - 
+ 
+
+## 2024-08-19
+- [danwinship] nftables https://github.com/containernetworking/plugins/pull/935
+    - cdc to review
+    - minor questions about /sbin/nft vs. direct netlink APIs
+- [zappa/antonio] 2.0 proto design discussion
+- [zappa] CNI 2.0 paradigm shift to RPC
+- [cdc] Anything else stalled on review? assign it to @squeed as reviewer
+- 
+
+## 2024-08-12
+- [cdc] poor bandwidh, back next week!
+- [zappa] CNI 2.0 paradigm shift to RPC (moved to next week)
+
+## 2024-08-05
+- [zappa] fyi: https://github.com/containerd/containerd/issues/10434
+- [tomo] (skip this week)Multi-gc https://github.com/containernetworking/cni/issues/1091
+- [doug] Question about "Support safe subdirectory-based plugin conf loading"
+    - https://github.com/containernetworking/cni/pull/1052
+    - First off, I love this and I'm PoC'ing up using this functionality.
+    - Question about bytes in the conf, especially [in the NetworkConfFromFile method](https://github.com/containernetworking/cni/pull/1052/files#diff-a1b02fde3e62d28f110eb3e00b9291095fb46a511bafc8d61cfe76b5cafa3e01R249-R267)
+        - Do we *only* represent the bytes as were in the file in the file in the conf.Bytes?
+        - Was wondering because the config is manipulated, but, not the returned bytes of the config.
+ 
+## 2024-07-29
+- skipped
+
+## 2024-07-22
+- Tomo cannot join due to power outage
+- [cdc] https://github.com/containernetworking/cni/pull/1103, review wanted
+- We merged [1052](https://github.com/containernetworking/cni/pull/1052)
+- Mike gives chatting about gRPC
+- 
+
+## 2024-07-15
+- [Tomo] not join, due to national holiday
+
 ## 2024-07-08
 - [tomo] Multi-gc https://github.com/containernetworking/cni/issues/1091
+    - [cdc]
+        - what's difference between current vs. new?
+        - what's about delegation?
+- [cdc] https://github.com/containernetworking/cni/pull/1103
+    - "cni.dev/attachments" vs. "cni.dev/valid-attachments"
+    - Oops, we used different keys in SPEC vs libcni
+    - Should we change SPEC or libcni?
+    - Decision: valid-attachments is a clearer name in this case.
+    - 
 
 
 ## 2024-07-01
