@@ -3,7 +3,28 @@
 _note_: the notes are checked in after every meeting to https://github.com/containernetworking/meeting-notes
 
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
-to add agenda items there.
+to add agenda items there
+
+## 2024-10-14
+- [cdc] plugins release
+    - Reverted exclude-cidr for bandwidth plugin https://github.com/containernetworking/plugins/pull/1105
+    - https://github.com/containernetworking/plugins/pull/1092
+    - hopefully cut release live :-)
+- [Lionel/Antonio] CNI DRA Driver
+    - https://github.com/kubernetes/enhancements/pull/4861
+    - POC: https://github.com/LionelJouin/network-dra?tab=readme-ov-file#result
+    - We chat about "dependent" relations, i.e. a DRA driver that consumes hardware from another driver
+    - Vision: something multus-like that is DRA aware
+- [zappa/dan] CNI/NPWG as a sig-network subproject
+- [danwinship] docs update for nftables patches, https://github.com/containernetworking/cni.dev/pull/143 (merged!)
+- 
+
+## 2024-10-07
+- plugins release: 
+    - waiting for one PR https://github.com/containernetworking/plugins/pull/1097
+    - vrf flake: https://github.com/containernetworking/plugins/issues/1103
+    - as soon as that merges, casey will cut release
+- [zappa] quick chat about conf
 
 ## 2024-09-30
 - plugins release: which PRs should get in?
