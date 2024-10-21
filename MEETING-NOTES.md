@@ -5,6 +5,25 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2024-10-21
+- [Lionel/Antonio] CNI DRA Driver
+    - Q: does it make sense for CNI via DRA to have the end-goal of mediating the primary network?
+    - Q: How might the CNI API better match (DRA / kubelet)'s lifecycle?
+        - Observation: biggest mismatch is chaining
+
+    - [doug] Fear is having 2 overlapping things people have to deal with, rather than 1.
+
+    - [ben] 2 things CNI does do well:
+        - doesn't allow platform to disallow networking extensions.
+        - supports N number of extensions.
+      Those are the properties I think any CNI replacement solution has to have a path toward. 
+
+    - https://github.com/kubernetes/enhancements/issues/4815
+    - https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/4815-dra-partitionable-devices#goals
+- Casey: CNI and DRA look, from a higher level, identical. Both are privileged hooks in to Pod and PodSandbox lifecycle. The only big difference is composition (i.e. chaining).
+    - The nice thing that DRA brings to the table is declarative in-cluster configuration (A Real K8S API)
+    - The nice thing that CNI brings to the table is vendor-and-user-extensible networking hooks
+
 ## 2024-10-14
 - [cdc] plugins release
     - Reverted exclude-cidr for bandwidth plugin https://github.com/containernetworking/plugins/pull/1105
