@@ -5,6 +5,63 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2024-11-25: no meeting (thanksgiving holiday)
+
+## 2024-11-18
+
+- [Tomo] Regrets due to headache
+- [Dan] bugfixes to nftables stuff: https://github.com/containernetworking/plugins/pull/1116, https://github.com/containernetworking/plugins/pull/1117, https://github.com/containernetworking/plugins/pull/1120
+- Kubecon recap?
+    - DRA excitement
+- [Tamilmani] like to discuss about this PR - https://github.com/containernetworking/cni/pull/1121
+    - Question: what does it mean when IPAM returns an interface?
+        - Could you return the name of the bridge?
+        - Could you return the macvlan "master"? definitely
+        - ENI: it's not a master, but the uplink
+    - PR https://github.com/containernetworking/cni/pull/1137 filed
+
+## 2024-11-11
+
+- Q: Skip for KubeCon week?
+    - A: Casey/Tomo regrets, unrelated reasons
+
+## 2024-11-04
+
+- [Zappa] cni.dev not updated with latest spec. I can do this if this is an oversight. This is just a reminder for me
+    - https://github.com/containernetworking/cni.dev/pull/142
+- [Lionel] Validation
+    - https://github.com/containernetworking/cni/issues/1132
+    - [tomo] need to discuss 
+        - where to implement (plugin or other)
+        - how we define (in spec?)
+        - example: define json schema in different file (of diffent repo, or directory)
+    - likely conclude that we could have schema (e.g. json schema) in repository and recommend to use to validate. No need to update SPEC. Good to implement to provide such schema file from current golang file
+        - TODO: come up with the way to generate schema file
+- [Zappa] do we have any call outs for kubecon that I should include?
+    - Casey: remind everyone that CNI composes in two dimensions: multiple interfaces, and multiple plugins for the same interface. Thus, a single gRPC call cannot represent the currrent API surface
+- [Swagat] bridge CNI plugin 
+https://github.com/containernetworking/plugins/issues/1107
+    - related to isolating containers connected to teh same bridge, there is similar functionality in Docker
+
+
+## 2024-10-28
+Regrets: Casey, Tomo
+
+- [Lionel/Antonio] CNI DRA Driver
+    - How to validate values for CNI plugins.
+    - e.g. a VALIDATE call to make sure a config is "valid"
+        - Where "valid" means not just structure (which we already check/validate)
+        - but also that the values of the config are within the bounds the plugin will accept
+        - to catch/minimize schedule-time add failures
+    - CHECK is for containers that already are scheduled, and can't work for this
+    - STATUS doesn't currently take a config at all.
+    - We do not currently require plugins to define value ranges they accept, so ADD would just fail today.
+    - There would likely still be some sort of practical gap between VALID = TRUE and ADD = FAIL, due to node/plugin runtime state?
+    - Could also be used for scheduling feedback in K8S?
+- [Dylan/Isovalent] Delegated IPAM issue
+    - https://github.com/cilium/cilium/pull/34779
+    - https://github.com/containernetworking/cni/pull/1121
+
 ## 2024-10-21
 - [Lionel/Antonio] CNI DRA Driver
     - Q: does it make sense for CNI via DRA to have the end-goal of mediating the primary network?
