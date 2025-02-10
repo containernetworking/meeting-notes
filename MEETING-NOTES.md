@@ -5,6 +5,138 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2025-02-10
+- Lionel: what's the status of CNI 2.0?
+    - Nobody's really taken it on
+- Lionel: would like ability to report allocatable capacity
+    - casey: What if we returned JSON from STATUS?
+        - problem: when STATUS is error, then we lose that
+    - See example from the kep:
+```
+kind: ResourceSlice
+spec:
+  driver: cni.dra.networking.x-k8s.io
+  deviceSources:
+  - name: eth1
+    provisionLimit: 1000
+    basic:
+      attributes:
+        name:
+          string: "eth1"
+      capacity:
+        bandwidth:
+          quantity: 10Gi
+```
+
+   How can we get this information from the CNI plugin. CAPACITY verb?
+   Casey: is this the "straw that breaks the camels back", should we move over to gRPC?
+   
+
+## 2025-02-03:
+- regrets: casey (on a plane)
+    - zappa oof today (containerd 2.0 status PR fix should be merged today)
+    - Tomo oof
+
+## 2025-01-27:
+- [mike] update on containerd 2.0 update
+- [lionel] update on cni-dra-driver
+    - [cdc] should we have better embeddable types?
+- [tomo] FYI: multus-cni support CNI 1.1
+- [Doug] Addressed comments on: https://github.com/containernetworking/plugins/pull/1143 (further review appreciated, and thanks for review!)
+    - Main note that the [changes for ErrDumpInterrupted](https://github.com/vishvananda/netlink/commit/084abd93d350e97ee5410b5b6311bcc211f7ea05) isn't in a tagged version of the `netlink` package yet.
+
+Could the DRA config type be something like
+
+```
+type CNIConfig struct {
+	metav1.TypeMeta `json:",inline"`
+
+	// IfName represents the name of the network interface requested.
+	IfName string `json:"ifName"`
+
+	// Config represents the CNI Config.
+	Config CNINetworkConfig
+    
+    Plugins []runtime.RawExtension `json:"plugins"`
+}
+
+type CNINetworkConfig struct {
+    CNIVersion string
+    Name string
+    DisableCheck bool
+    DisableGC bool
+}
+```
+
+
+## 2025-01-20: 
+- [ormergi] port-isolation support in bridge CNI proposal
+  https://github.com/containernetworking/plugins/pull/1141
+  https://github.com/containernetworking/plugins/issues/1135
+- Can someone from RH "weird networking" team(s) take on some Bridge PR reviews?
+    - maybe need CODEOWNERS files?
+    - Example [CODEOWNERS file from whereabouts](https://github.com/k8snetworkplumbingwg/whereabouts/blob/master/.github/CODEOWNERS)
+        - I thought there'd be more in [the commit that added it](https://github.com/k8snetworkplumbingwg/whereabouts/commit/79ded4c7ae7a5dde484710dc4fd0e80772a5f14f), there isn't. -Doug
+- 
+
+## 2025-01-13: 
+- CI [failing](https://github.com/containernetworking/plugins/actions/runs/12636474981/job/35208789424?pr=1133) with `unshare: write failed /proc/self/uid_map: Operation not permitted`. Anyone have any clues?
+    - Should we just remove this for now to unblock CI?
+- Tomo will skip this call due to holiday. (But please see PR1137 below)
+- PR
+    - https://github.com/containernetworking/plugins/pull/1137 (just remove `scripts/release.sh` because it is no longer used, replaced with github action)
+        - github CI failed to tests (even though it is passed in my lab). Guess that github CI needs to be fixed...
+- Review CNI v1.2 [ideas](https://github.com/containernetworking/cni/issues?q=is%3Aopen+is%3Aissue+milestone%3A%22CNI+v1.2%22)
+- discuss [VALIDATE](https://github.com/containernetworking/cni/issues/1132)
+    - Relevant to conversation about [cni-dra](https://github.com/kubernetes-sigs/cni-dra-driver/pull/1)
+    - wow, dra scheduling is *complicated*
+- jitsi dies, https://meet.google.com/gjm-mmmf-cra
+
+## 2025-01-06: 
+- PR
+    - https://github.com/containernetworking/plugins/pull/1123
+        - and then file another PR to remove scripts/release.sh because it is no longer used.
+    - Split go.mod and CI go version.
+
+## 2024-12-30: NO MEETING
+
+## 2024-12-23: NO MEETING
+
+## 2024-12-16:
+- vxlan plugin proposal:
+    - does it need a host-level daemon?
+        - if you use multicast, no. otherwise yes
+    - inter-host routing does not match CNI's model
+    - 
+
+## 2024-12-09
+- [cdc] Should we drop error code 51? Or reword it such that it is very optional?
+    - I have been in 2 PRs where it has caused stress and confusion.
+    - I'd be surprised if a plugin ever implements it.
+    - From current spec:
+        - > 51: The plugin is not available, and existing containers in the network may have limited connectivity.
+- [zappa] STATUS Update
+- [Lionel] PR: https://github.com/containernetworking/cni.dev/pull/142
+- [Lionel] Vxlan: https://github.com/containernetworking/plugins/issues/1062
+- [Doug] CNI CHECK / food for thought / question
+    - OVN-K has this functionality they call "user defined networks" -- and it provides some multitenancy functionality. It has a CR which defines a network for a user.
+    - Currently, when pods that exist prior to the CR, have to be restarted. I've been getting questions about "can we do this with CNI without a pod restart", so they'd get some CNI $COMMAND, and then perform some "update" to the netns to make it fit whatever is in their CR (which I think is mostly "update the routes")
+    - CNI CHECK was brought up, does that even sound right?
+    - We have this idea of a "dynamic attachment" in the net-attach-def spec, so I tend to think of it from that perspective, but, it's weird because it's for the cluster's "default" network (I know that's a net-attach-def kind of definition, but yeah.)
+    - DRA
+        - You can't add claims to running pods right now in a DRA situation.
+    - UPDATE: Could it just be another ADD?
+        - Maybe other metadata via CNI ARGS etc.
+        - Lionel handled the concept of "UPDATE" in Meridio, he's just plumb an additional interface and just do a route update in that context.
+
+## 2024-12-02
+
+- [Tomo] Regrets (after end of DST, hard to join due to 1AM here... I always watch the minutes. So please let mention me if you want to heads-up something. thanks.)
+- PR review
+    - should we put a 1.6.1? Yes
+    - We tag v1.6.1
+- A small discussion of STATUS for containerd, seems to be a misunderstanding
+
 ## 2024-11-25: no meeting (thanksgiving holiday)
 
 ## 2024-11-18
