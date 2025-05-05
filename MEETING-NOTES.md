@@ -5,6 +5,97 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2025-05-05
+- [zappa] We have an issue where the metaplugin fails and then the runtime keeps allocating an IP. What can we do on the CNI side to stop the bleeding here. 
+- We discuss this for some time. The conclusion:
+    - It is not safe to ignore an error on delete, as stale resources may be re-used (i.e. IP allocations and firewall rules). Need to delete *both* or neither
+    - If there is a failure on ADD, we don't know if any resources were created, so a DEL is required
+    - STATUS is the immediate fix -- if a chained plugin is unavailable, it should fail STATUS
+- TODO
+    - Write best-practices document
+    - File issue adding "no non-namespaced resources were added" error code set
+        - This would be used by runtimes to know that certain error corner cases could be skipped, e.g. failed ADD
+        - "Don't sweep the floor, I'm about to tear down the building!" h/t: [raymond chen](https://devblogs.microsoft.com/oldnewthing/20120105-00/?p=8683)
+ 
+## 2025-04-28
+- [cdc] Tagged plugins v1.7.0 (and v1.7.1, oops!)
+    - lesson learned: don't do `git push --tags`, create tag via releases page.
+- [cdc] Thanks, Lionel for dealing with maintainers DBs
+    - anything else outstanding?
+- [mlguerrero12] PR for review: https://github.com/containernetworking/plugins/pull/1175
+
+## 2025-04-21
+
+- [Doug] Show and tell
+    - Krang, K8s enabled CNI runtime.
+    - https://asciinema.org/a/DSNTIQIg5VM2mGh5oFK7YlGUW
+
+## 2025-04-14
+- https://github.com/containernetworking/plugins/pull/1168
+    - merged!
+- https://github.com/opencontainers/runtime-spec/pull/1271
+- CNI DRA Driver:
+    - Validation: https://github.com/containernetworking/cni/issues/1132
+    - Scheduling?
+- update MAINTAINERS: https://github.com/containernetworking/cni/pull/1157
+    - push some people to Emeritus status
+- DEL wording: https://github.com/containernetworking/cni/pull/1156
+
+## 2025-04-07
+- [Doug] v1.2.4 release for CNI?
+    - [Commits since v1.2.3](https://github.com/containernetworking/cni/compare/v1.2.3...main)
+    - Fairly minor, but, I'd like the safe subdirectory loading changes, please and thanks.
+
+## 2025-03-24:
+- time for plugins release
+    - fixing netlink
+    - https://github.com/containernetworking/plugins/pull/1154 , 1156
+    - go 1.24
+
+
+## 2025-03-17:
+- continue {DRA + NRI} CNI substitution
+    - casey's idea for "merging" CNI and DRA:
+        0. We give up chaining?
+            - We don't necessarily have to give up anything; can we make the simple case simpler, and the complicated case possible?
+        1. NRI returns IP addresses
+        2. "infinite" / "virtual" / "dynamic" device creation (i.e. how do you represent a fully virtual, "free" device to the scheduler) ([kep 5075](https://github.com/kubernetes/enhancements/issues/5075))
+        3. Some kind of formalized Primary Network
+
+We discuss replacing CNI with NRI. We also discuss whether or not DRA needs to be involved at all.
+
+## 2025-03-10:
+- regrets:
+    - Tomo
+- review https://github.com/google/dranet
+    - [Doug] Concerns about user experience, especially user classes like cluster admins and network plugin developers
+    - Replace CNI with DRA, or wrap CNI with DRA?
+    - [KEP 5075: DRA: Consumable Capacity](https://github.com/kubernetes/enhancements/issues/5075)
+        - Lionel brings up example where you have macvlan + vlan driver, and they're essentially maintaining two copies of the same resources.
+    - Other resources
+        - [sig-net ML post](https://groups.google.com/g/kubernetes-sig-network/c/f0GsD60zEYE/m/EDWQZJV6AAAJ)
+        - [sig-node 4817 resource claim device status](https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/4817-resource-claim-device-status)
+    - Big question: How do you define a primary network in a DRA scenario?
+        - We also have node readiness in crio and contained.
+
+## 2025-03-03:
+- DST: US DST is applied to this call
+- Discussion: should we work on a first draft of gRPC?
+    - Tomo: meh
+    - 
+
+## 2025-02-24:
+- regrets:
+    - Casey (on vacation)
+    - Tomo (national holiday)
+
+## 2025-02-17:
+- regrets: 
+    - Tomo (will be back when DST comes. BTW, is CNI call aligned to US DST time?) 
+- Casey and Lionel chat about making DRA and CNI have similar APIs
+    - Plan for now is to lift existing API in to gRPC without big changes
+    - 
+
 ## 2025-02-10
 - Lionel: what's the status of CNI 2.0?
     - Nobody's really taken it on
