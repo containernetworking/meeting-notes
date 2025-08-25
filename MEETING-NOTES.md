@@ -5,6 +5,119 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+## 2025-08-25
+- Should we cut a release? https://github.com/containernetworking/plugins/compare/v1.7.1...main
+    - merged unreleased changes: bridge VLAN changes.
+    - Marcelo to file docs PR for bridge changes
+    - Casey to bump Go version
+- DRA update:
+    - DRA is GA tomorrow
+- Meeting scheduling:
+    - Switching to 1st and 3rd Monday of the month
+    - Would like to move 1 hr earlier, if Mike is OK
+    - Keep at 11:00 Eastern for now.
+
+## 2025-08-18
+- Consider moving to bi-weekly? ()
+- Pushing on ContainerD's GC implementation
+    - Casey to write up from Cilium's perspective
+- Discuss PR https://github.com/containernetworking/plugins/pull/1195, adding a bridge uplink
+    - This adds a "physical" interface to the bridge
+    - Q: is this in the plugin's wheelhouse? or should this be NMState (et al.)?
+        A: This seems in-scope, so it's not out-of-the-question
+    - Q: This is vlan-specific. What happens if there are no vlans?
+    - Q: What is the intended behavior?
+    - Marcelo to write up these questions to the submitter.
+
+## 2025-07-28
+- cdc on vacation Aug 04, Aug 11
+
+## 2025-07-21
+
+- PR reviews
+- GC progress in containerd?
+    - cri-o does GC at startup: https://github.com/cri-o/cri-o/pull/8245/files
+- we do lots of PR hygiene
+
+## 2025-07-14
+
+Regrets: Casey (Childcare snafu)
+
+## 2025-07-07
+
+Deadline for kubecon November maintainer track is approaching.
+
+We discuss the ownership of Multus, now that Tomo and Doug have wandered off to more ecxAIting work.
+
+We would like to focus on gRPC. Whether or not this is determined to be CNI 2.0 is somewhat unimportant.
+
+Open question: did containerd add GC support?
+
+
+
+## 2025-06-30
+
+We discuss the CNI-DRA driver. Lionel mentions that determining the initial set of resources is difficult.
+Question: should we add a new informational verb? Or should we expose them statically in the CNI configuration file?
+
+Challenge: some resources, most notably the node's uplink, may be shared between, say, a macvlan and ipvlan device.
+
+## 2025-06-23
+
+Sebiastian and Casey discuss DRA.
+
+## 2025-06-16
+
+- regrets: tomo
+- [danwinship] returning errors from DEL
+- [danwinship] did people actually talk about https://github.com/containernetworking/cni/issues/1162 (exec from container image) last week? I also added some thoughts to https://github.com/containernetworking/cni/issues/821#issuecomment-2944552357 (CNI 2.0 daemonization). Maybe if we try to solve a simpler problem we can make some progress on this...
+
+## 2025-06-09
+
+- regrets: casey
+- [Doug] quick news (<5 minutes)
+    - Doug starting a new role with new upstreams! (especially: vllm)
+- https://github.com/containernetworking/cni/issues/1162 (just look this one)
+
+## 2025-06-02
+- CI fixed (yay)
+- let's do some reviews
+    - https://github.com/containernetworking/plugins/pull/1180, https://github.com/containernetworking/plugins/pull/1181
+    - https://github.com/containernetworking/cni/pull/1152/
+    - https://github.com/containernetworking/cni.dev/pull/147
+    - https://github.com/containernetworking/cni.dev/pull/146
+    - https://github.com/containernetworking/cni.dev/pull/138
+- Why do we disable DAD (duplicate address detection)?
+    - we assume IPAM will do the job for us, it's slow
+    - https://github.com/containernetworking/plugins/pull/695
+
+## 2025-05-26
+- regrets: tomo
+
+
+## 2025-05-19
+- Plan to fix the "doomed delete" problem:
+    1. List certain ADD error codes as "nothing was created"
+    2. Cache when an ADD fails with this error
+    3. On DEL, if the DEL fails for that specific plugin, swallow the error.
+    - additionally, flag certain DEL error codes as "deletion failed, but all resources are in the namespace".
+
+- Discuss the confusing vlan situation: https://docs.google.com/document/d/1fHrZ6f2Syaq-jiS1pdTXRYxY29mu4dYakVCqoMZtS4U/edit?addon_store&tab=t.0
+    - proposal: `vlans` sub-field that disables all other vlan behavior when set
+    - `{vlans: {"untagged": 1234, "tagged": [5, 6, 7] }}`
+
+## 2025-05-12
+- regrets: cdc, tomo
+- [zappa] containerd: only passing in a subset of labels
+    - everyone's querying for it
+    - looking into a single line change to instead pass all of the labels
+    - any issues?
+    - [Doug] sgtm, I need to check what's up on the crio side, and how we're leveraging it.
+    - There are limitations, a pod spec can only be a meg (which is configurable) in etcd. Then there's a kernel limitation, which is also set to a meg.
+- https://github.com/containernetworking/plugins/pull/1175
+    - Still pending some other options
+- 
+
 ## 2025-05-05
 - [zappa] We have an issue where the metaplugin fails and then the runtime keeps allocating an IP. What can we do on the CNI side to stop the bleeding here. 
 - We discuss this for some time. The conclusion:
