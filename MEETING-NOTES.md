@@ -5,6 +5,22 @@ _note_: the notes are checked in after every meeting to https://github.com/conta
 An editable copy is hosted at https://hackmd.io/jU7dQ49dQ86ugrXBx1De9w. Feel free
 to add agenda items there
 
+
+## 2025-09-01
+- sent new meeting invite to CNI-DEV: https://groups.google.com/g/cni-dev
+    - Every other tuesday
+    - would like to move 1 hr earlier - does that work for Mike Z?
+- PR review
+    - https://github.com/containernetworking/cni/pull/1168
+    - https://github.com/containernetworking/cni/pull/1169
+    - bump plugins to v1.25: https://github.com/containernetworking/plugins/pull/1201
+    - https://github.com/containernetworking/cni.dev/pull/134
+    - https://github.com/containernetworking/plugins/pull/1201
+- Casey wonders: are the Windows plugins being used?
+    - they are referenced in the k8s documentation
+    - We will ask Mike to reach out
+    - We cut v1.8.0 :partying_face: 
+
 ## 2025-08-25
 - Should we cut a release? https://github.com/containernetworking/plugins/compare/v1.7.1...main
     - merged unreleased changes: bridge VLAN changes.
